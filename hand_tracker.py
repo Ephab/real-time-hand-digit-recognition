@@ -6,6 +6,26 @@ import csv
 mp_hands = mp.solutions.hands  # type: ignore[attr-defined]
 mp_draw = mp.solutions.drawing_utils # type: ignore
 
+
+def initialize_csv():
+    try:
+        with open("train_data.csv", 'r'):
+            pass
+    except:
+        with open("train_data.csv", 'a') as train_init:
+            writer = csv.writer(train_init, delimiter=',')
+            header=[]
+            for i in range(len(mp_hands.HandLandmark)):
+                header.append(mp_hands.HandLandmark(i).name + "_x")
+                header.append(mp_hands.HandLandmark(i).name + "_y")
+                header.append(mp_hands.HandLandmark(i).name + "_z")
+
+            header.append("label")
+            writer.writerow(header)
+
+initialize_csv()
+
+
 hand_detector = mp_hands.Hands(
     static_image_mode=False,
     max_num_hands=1,
@@ -44,13 +64,19 @@ for frame_dict in frames:
             )
             landmarks = clean_data(hand_num, hand_landmarks.landmark)
             
-            if cv.waitKey(1) == ord('1'):
+            digit_pressed = cv.waitKey(1)
+            
+            if digit_pressed in [ord('1'), ord('2'), ord('3'), ord('4'), ord('5')]:
+                
                 coordinates = clean_coordinates_for_csv(landmarks)
-                with open("mappings.csv", 'a', newline='') as mappings:
-                    writer = csv.writer(mappings, delimiter=',')
+                coordinates.append(digit_pressed - 48) #append the label (-48 to get num not ascii)
+                with open("train_data.csv", 'a', newline='') as train:
+                    writer = csv.writer(train, delimiter=',')
                     writer.writerow(coordinates)
                 print(coordinates)
+                
             # print(f"Hand_{hand_num}: Landmarks: {landmarks}")
+            
             
     cv.imshow("frame", bgr)
     if cv.waitKey(1) == ord('q'):
