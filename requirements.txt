@@ -1,0 +1,6 @@
+numpy
+mediapipe
+torch
+cv2
+gradio
+time
