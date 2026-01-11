@@ -1,6 +1,5 @@
-numpy
-mediapipe
-torch
-cv2
-gradio
-time
+numpy==1.26.4
+mediapipe==0.10.14
+torch==2.9.1
+opencv-python==4.11.0.86
+gradio==6.2.0
