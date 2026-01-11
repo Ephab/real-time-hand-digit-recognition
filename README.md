@@ -2,6 +2,8 @@
 
 Real-time hand digit recognition from a webcam.
 
+Demo: [Hugging Face Demo](https://huggingface.co/spaces/Ephab/Hand_Digit_Recognition)
+
 This project uses:
 - **MediaPipe Hands** to detect 21 3D hand landmarks per frame.
 - A small **PyTorch feed-forward neural network** to classify the gesture into digits **1–5**.
